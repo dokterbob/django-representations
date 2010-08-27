@@ -4,8 +4,6 @@ from django.template import loader, Node, TemplateSyntaxError
 from django import template
 from django.template.context import Context
 
-OBJECT_VAR_NAME='representation_object_varOUIAOIUAOUI'
-
 register = template.Library()
 
 def get_representation_content(model, representation, context=None):
@@ -19,28 +17,9 @@ def get_representation_content(model, representation, context=None):
 
     if context is None:
         context = Context()
-
-    context[OBJECT_VAR_NAME] = model
         
     return t.render(context)
     
-class DefineObjectNode(Node):
-    def __init__(self, object_name_exp):
-        self.object_name_exp = object_name_exp
-
-    def render(self, context):
-        object_name = self.object_name_exp.resolve(context)
-        context[object_name] = context[OBJECT_VAR_NAME]
-        return ""
-    
-def do_defineobject(parser, token):
-    bits = token.contents.split()
-
-    if len(bits) != 3 and bits[1] != 'as':
-        raise TemplateSyntaxError("Proper syntax is {%% %s as [varname]" % (bits[0],))
-    
-    return DefineObjectNode(parser.compile_filter(bits[2]))
-
 class RepresentNode(Node):
     def __init__(self, model_name, model_exp, representation_exp):
         self.model_name = model_name
@@ -92,5 +71,3 @@ def do_represent(parser, token):
                          )
 
 register.tag('represent', do_represent)
-register.tag('define_object', do_defineobject)
-#register.filter('represent_as', get_representation_content)
