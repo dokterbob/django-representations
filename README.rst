@@ -4,9 +4,41 @@ django-representations
 A set of template tags that helps in displaying objects various ways.
 ---------------------------------------------------------------------
 
-django-representations is a set of template tags that helps in displaying
-objects various ways. It was forked from the original version by Eric Moritz.
+django-representations contains template tag that helps in representing
+objects in several ways, dependent on the template selected and the object
+type. It was forked from the original version by Eric Moritz.
 
+For instance, for a list of blog entries: 
+
+diario/entry_archive_day.html:: 
+
+	... 
+	{% represent entry as "summary.html" %}
+	...
+
+diario/entry_archive.html::
+
+	...
+	{% represent entry as "summary.html" %}
+	...
+
+diario/entry_detail.html::
+
+	...
+	{% represent entry as "detail.html" %}
+	...
+
+Each template is placed in `representations/diario/entry/`, for example. When no template 
+is found there, the tag looks for the named template in `representations/diario/` and, 
+lastly, `representations/` is tried. This allows for easy overriding of templates for
+specific apps or object types while maintaining generic representations for other objects.
+
+The power of this convention is revealed when you do something like a search
+engine that may be a list of different content types::
+
+	{% for object in search_result_list %}
+		{% represent object as "search_result.html" %} 
+	{% endfor %}
 
 Tags
 ====
