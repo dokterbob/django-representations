@@ -1,3 +1,4 @@
+import logging
 
 from django.template import loader, Node, TemplateSyntaxError
 from django import template
@@ -6,8 +7,12 @@ OBJECT_VAR_NAME='representation_object_varOUIAOIUAOUI'
 register = template.Library()
 def get_representation_content(model, representation, context=None):
     opts = model._meta
-    label = "%s.%s" % (opts.app_label, opts.object_name.lower())
-    t = loader.get_template("representations/%s/%s" % (label,representation))
+    template_list = [ "representations/%s/%s/%s" % (opts.app_label, opts.object_name.lower(), representation), 
+                      "representations/%s/%s"    % (opts.app_label, representation), ]
+                      
+    logging.debug("Representing the %s '%s' as %s." % (opts.object_name.lower(), model, representation))
+    
+    t = loader.select_template(template_list)
 
     if context is None:
         context = Context()
@@ -57,7 +62,9 @@ def do_represent(parser, token):
     This tag takes a model and passes it and the context to
     a template in the following location:
     
-    representations/app_label.object_name/[template]
+    representations/app_label/object_name/[template] or
+    representations/app_label/[template] or
+    representations/[template] (whichever comes first)
     {% represent [model] as "[template]" %}
 
     This allows you to have the same representation for the object in numerous
