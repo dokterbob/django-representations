@@ -3,8 +3,11 @@ import logging
 from django.template import loader, Node, TemplateSyntaxError
 from django import template
 from django.template.context import Context
+
 OBJECT_VAR_NAME='representation_object_varOUIAOIUAOUI'
+
 register = template.Library()
+
 def get_representation_content(model, representation, context=None):
     opts = model._meta
     template_list = [ "representations/%s/%s/%s" % (opts.app_label, opts.object_name.lower(), representation), 
