@@ -2,10 +2,9 @@
 django-representations
 ======================
 A set of template tags that helps in displaying objects various ways.
----------------------------------------------------------------------
 
 About
-=====
+-----
 django-representations contains template tag that helps in representing
 objects in several ways, dependent on the template selected and the object
 type. It was forked from the original version by Eric Moritz.
@@ -44,7 +43,7 @@ engine that may be a list of different content types::
 	{% endfor %}
 
 Installation
-============
+------------
 First make sure you install `django-representations` into you Python path::
 
 	git clone git://github.com/dokterbob/django-representations.git
@@ -54,16 +53,16 @@ First make sure you install `django-representations` into you Python path::
 Next, add the application to your `INSTALLED_APPLICATIONS` in `settings.py`::
 
 	INSTALLED_APPLICATIONS = (
-		...
+	    ...
 		representations,
 		...
-		)
+	)
 
 Usage
-=====
+-----
 You can use the tag by loading the template library::
 
-    ...
+	...
 	{% load representations %}
 	...
 	{% represent [model] as "[template]" %}
